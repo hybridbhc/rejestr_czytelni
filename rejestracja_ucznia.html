@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta http-equiv=\"content-language\" content=\"pl\" charset=\"iso-8859-2\">
+<title>Rejestracja</title>
+</head>
+<body>
+<h1>Rejestracja</h1>
+<form method=post action="rejestracja_ucz.php" onsubmit="if(this.imie.value=='')
+      {alert('Brak imienia. Wype³nij wszystkie pola!!');return false} if(this.nazwisko.value=='')
+      {alert('Brak nazwiska. Wype³nij wszystkie pola!!'); return false} if(this.haslo.value=='')
+      {alert('Brak has³a. Wype³nij wszystkie pola!!'); return false} if(this.haslo2.value=='')
+      {alert('Potwierdzenia has³a. Wype³nij wszystkie pola!!'); return false} if(this.haslo.value != this.haslo2.value)
+      {alert('le powtórzone has³o!!'); return false}"
+      onreset="if(!confirm('Jeste? pewny ¿e chcesz wyczy?ciæ formularz?')) return false" >
+
+  <input type="text" name="imie" size="20" maxlength="20" style="text-transform:capitalize;"/>Imiê czytelnika<br>
+  <input type="text" name="nazwisko" size="35" maxlength="35" style="text-transform:capitalize;"/>Nazwisko czytelnika<br>
+  <input type="password" name="haslo" size="10" maxlength="10"/>Has³o do konta<br>
+  <input type="password" name="haslo2" size="10" maxlength="10"/>Potwierdzenie has³a<br>
+  <select name="klasa">
+		<option selected="selected" disabled="disabled">Z której klasy?</option>
+            <option value="4a">4a</option>
+		<option value="4b">4b</option>
+		<option value="4c">4c</option>
+		<option value="4d">4d</option>
+	      <option value="5a">5a</option>
+		<option value="5b">5b</option>
+		<option value="5c">5c</option>
+		<option value="5d">5d</option>
+		<option value="6a">6a</option>
+		<option value="6b">6b</option>
+		<option value="6c">6c</option>
+		<option value="6d">6d</option>
+		<option value="6e">6e</option>
+	</select>
+
+  <div><input style="float:left" type="submit" value="Zapisz" /></div>
+<div><input style="float:left;margin-left:180px" type="reset" value="Wyczy¶æ" /><br></div>
+  </form>
+</body>
+</html>

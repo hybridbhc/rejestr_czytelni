@@ -1,0 +1,15 @@
+<?php
+
+   $polaczenie=mysql_connect("localhost","root","technol");
+   mysql_select_db("rejestr",$polaczenie) or die (mysql_error());
+   $a=mysql_query("SELECT FROM czytelnik",$polaczenie);
+   $n=mysql_num_rows($a);
+
+   for($i=1;$i<=$n;$i++){
+   $uczen=mysql_query("SELECT imie,nazwisko,klasa FROM czytelnik WHERE id_ucznia=$i",$polaczenie);
+   $dane=mysql_fetch_row($uczen);
+   echo"$dane[0],$dane[1],$dane[2]";}
+
+
+?>
+

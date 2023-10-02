@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="content-language" content="pl">
+<title></title>
+</head>
+
+<body>
+        <h1>Rejestracja</h1>
+<form method=post action="$PHP_SELF" onreset="if
+(!confirm('Jeste? pewny ¿e chcesz wyczy?ciæ formularz?')) return false">
+
+  <input type="text" name="imie" size="25" maxlength="25"/>Imiê<br>
+  <input type="text" name="nazwisko" size="50" maxlength="50"/>Nazwisko<br>
+  <input type="password" name="haslo" size="10" maxlength="10"/>Twoje has³o<br>
+  <input type="password" name="haslo" size="10" maxlength="10"/>Potwierd¼ has³o<br>
+  <select name="klasa">
+		<option>4a</option>
+		<option>4b</option>
+		<option>4c</option>
+		<option>4d</option>
+		<option>5a</option>
+		<option>5b</option>
+		<option>5c</option>
+		<option>5d</option>
+		<option>6a</option>
+		<option>6b</option>
+		<option>6c</option>
+		<option>6d</option>
+		<option>6e</option>
+	</select>
+
+  <div><input style="float:left" type="submit" value="Zapisz" /></div>
+<div><input style="float:left;margin-left:180px" type="reset" value="Wyczy¶æ" /><br></div>
+  </form>
+
+</body>
+</html>
+<?php
+     if(!$_POST[imie]||!$_POST[nazwisko]||!$_POST[haslo]||!$_POST[klasa]) {
+          echo"Nieprawid³owo wype³niony formularz";
+     }
+     else{
+          $spr_ucznia=mysql_query("SELECT * FROM uczen WHERE imie=$_POST[imie] AND imie=$_POST[nazwisko]",$polaczenie);
+          if(mysql_num_rows($spr_ucznia)>0){
+               echo"Taki uczeñ jest ju¿ zarejestrowany!!";
+               exit();                                 }
+          else{
+          $id_ucznia=mysql_insert_id();
+          $dodaje=mysql_query("INSERT INTO uczen(imie,nazwisko,klasa,haslo)
+                       VALUES($_POST[imie],$_POST[nazwisko],$_POST[klasa],$_POST[haslo])",$polaczenie);
+          }}
+     }
+if($dodaje){
+$weryfikacja=mysql_query("SELECT * FROM uczen WHERE id_ucznia=$id_ucznia",$polaczenie);
+$wydruk=mysql_fetch_row($weryfikacja);
+
+print"<h1>Zarejestrowano u¿ytkownika:</h1> <br>
+Imie:<b>$wydruk[1]</b><br>
+Nazwisko:&nbsp<b>$wydruk[2]</b><br>
+Klasa:&nbsp<b>$wydruk[3]</b><br>
+Has³o:&nbsp<b>$wydruk[4]</b><br>";
+exit();}
+else{echo"cos nie tak";}
+}
+
+
+?>
+
+

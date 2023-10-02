@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="content-language" content="pl">
+<title></title>
+</head>
+
+<body>
+<div style="background-color:#FFBFBF;"><center style="font-family : EFN Meduse White; font-size:50px;color:white;">Witaj w rejestrze odwiedzin Czytelni Multimedialnej SP2 w E³ku</center></div><hr color="#FF8040">
+<div style="margin-top:20px;margin-right:0px;float:left;color : blue; font-family : Corbel; font-size : 17px; "><span text-color="blue">Wyszukaj swoje nazwisko na li¶cie i wpisz swoje has³o obok:</span><br>
+<br /><br />
+
+<?php
+
+   $polaczenie=mysql_connect("localhost","root","technol") or die(mysql_error());
+   mysql_query("SET NAMES 'latin2'");
+   mysql_select_db("rejestr",$polaczenie) or die (mysql_error());
+
+   $n=mysql_num_rows(mysql_query("SELECT * FROM czytelnik",$polaczenie));
+   //echo"$n";
+   for($i=1;$i<=$n;$i++){
+   $uczen=mysql_query("SELECT imie,nazwisko,klasa,haslo FROM czytelnik WHERE id_czytelnika=$i Order by nazwisko",$polaczenie);
+   $dane_listy=mysql_fetch_row($uczen);
+   echo"<b>$dane_listy[0] $dane_listy[1]</b> $dane_listy[2]<form action=\"$PHP_SELF\" method=\"post\">
+                          <input type=\"password\" name=\"pass\"/>
+                          <input type=\"hidden\" name=\"im\" value=\"$dane_listy[0]\" />
+                          <input type=\"hidden\" name=\"nazw\" value=\"$dane_listy[1]\" />
+                          <input type=\"hidden\" name=\"klas\" value=\"$dane_listy[2]\" />
+                          <input type=\"hidden\" name=\"hasl\" value=\"$dane_listy[3]\" />
+                          <input type=\"submit\" value=\"Wpisz siê\"/></form>";}
+
+   $wywo³anie_danych=mysql_query("Select imie,nazwisko,klasa
+                                  From czytelnik
+                                  Where imie='$_POST[im]' AND nazwisko='$_POST[nazw]' AND klasa='$_POST[klas]'
+                                  AND haslo='$_POST[hasl]'",$polaczenie)
+                                  or die ("Has³o jest nieprawid³owe <br> <a href=\"lista_uczniow.php\">
+                                  Wpisz has³o jeszcze raz!!</a>");
+
+   $dane=mysql_fetch_row($wywo³anie_danych);
+   echo"$dane[0] $dane[1] $dane[2]";
+
+   if(!$dane){echo"Przykro mi has³o jest nieprawid³owe";exit();}
+   mysql_query("Insert Into wizyta(imie_czyt,nazwisko_czyt,klasa_czyt,data,godzina,nr_stanowiska)
+      Values('$dane[0]','$dane[1]','$dane[2]',now(),now(),'1')") or die (mysql_error());
+
+?>
+</div>
+
+
+<div style="margin-top:20px;margin-right:20px;float:right;color : blue; font-family : Corbel; font-size : 17px; "><b>Szybsze wyszukiwanie:</b><br>
+  <form method=post action="szukaj.php" onsubmit="if(this.fraza.value=='')
+      {alert('Wpisz swoje nazwisko aby wyszukaæ!');return false}"
+      onreset="if(!confirm('Jeste? pewny ¿e chcesz wyczy¶ciæ formularz?')) return false" ><hr>
+      Podaj swoje nazwisko...<br><input type="text" name="fraza" size="35" maxlength="35" style="text-transform:capitalize;"/><br>
+      <input style="float:right;margin-left:10px" type="submit" value="Szukaj" />
+
+   </form>
+<div style="margin-top:50px;"><div style="color:red;font-size:30px">Nie ma Ciê na li¶cie?</div><br><b>Zarejestruj siê!<hr></b>
+<form method=post action="rejestracja_ucz.php" onsubmit="if(this.imie.value=='')
+      {alert('Brak imienia. Wype³nij wszystkie pola!!');return false} if(this.nazwisko.value=='')
+      {alert('Brak nazwiska. Wype³nij wszystkie pola!!'); return false} if(this.haslo.value=='')
+      {alert('Brak has³a. Wype³nij wszystkie pola!!'); return false} if(this.haslo2.value=='')
+      {alert('Potwierdzenia has³a. Wype³nij wszystkie pola!!'); return false} if(this.haslo.value != this.haslo2.value)
+      {alert('?le powtórzone has³o!!'); return false}"
+      onreset="if(!confirm('Jeste? pewny ¿e chcesz wyczy?ciæ formularz?')) return false" >
+
+  Imiê czytelnika<br><input type="text" name="imie" size="20" maxlength="20" style="text-transform:capitalize;"/><br />
+  Nazwisko czytelnika<br><input type="text" name="nazwisko" size="35" maxlength="35" style="text-transform:capitalize;"/><br />
+  Has³o do konta<br><input type="password" name="haslo" size="10" maxlength="10"/><br />
+  Potwierdzenie has³a<br><input type="password" name="haslo2" size="10" maxlength="10"/><br />
+  <select name="klasa">
+		<option selected="selected" disabled="disabled">Z której klasy?</option>
+            <option value="4a">4a</option>
+		<option value="4b">4b</option>
+		<option value="4c">4c</option>
+		<option value="4d">4d</option>
+	      <option value="5a">5a</option>
+		<option value="5b">5b</option>
+		<option value="5c">5c</option>
+		<option value="5d">5d</option>
+		<option value="6a">6a</option>
+		<option value="6b">6b</option>
+		<option value="6c">6c</option>
+		<option value="6d">6d</option>
+		<option value="6e">6e</option>
+	</select>
+
+  <div><input style="float:left" type="submit" value="Zapisz" /></div>
+<div><input style="float:right;margin-right:0px" type="reset" value="Wyczy¶æ" /><br></div>
+  </form></div>
+
+
+
+</div>
+
+</body>
+</html>
